@@ -94,14 +94,7 @@ with st.sidebar:
         )
     else:
         num_images = 0
-        st.slider(
-            "Number of Images to Use",
-            min_value=0,
-            max_value=0,
-            value=0,
-            disabled=True,
-            key="num_images_slider"
-        )
+        st.info("Upload images to enable the image count slider.")
     
     # Remove images
     if st.session_state.images:
