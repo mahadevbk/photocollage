@@ -84,7 +84,24 @@ with st.sidebar:
             st.session_state.rotations.append(0)
     
     # Number of images to use
-    num_images = st.slider("Number of Images to Use", 1, len(st.session_state.images), len(st.session_state.images))
+    if st.session_state.images:
+        num_images = st.slider(
+            "Number of Images to Use",
+            min_value=1,
+            max_value=len(st.session_state.images),
+            value=len(st.session_state.images),
+            key="num_images_slider"
+        )
+    else:
+        num_images = 0
+        st.slider(
+            "Number of Images to Use",
+            min_value=0,
+            max_value=0,
+            value=0,
+            disabled=True,
+            key="num_images_slider"
+        )
     
     # Remove images
     if st.session_state.images:
@@ -94,6 +111,8 @@ with st.sidebar:
                 st.session_state.images.pop(i)
                 st.session_state.rotations.pop(i)
                 st.rerun()
+    else:
+        st.info("No images uploaded to remove.")
 
 # Main area
 st.header("Image Rotation")
@@ -106,7 +125,7 @@ if st.session_state.images:
             st.session_state.rotations[i] = rotation
 
 # Rearrange button
-if st.button("Rearrange Collage"):
+if st.session_state.images and st.button("Rearrange Collage"):
     st.session_state.collage = create_collage(st.session_state.images[:num_images], st.session_state.rotations[:num_images], size, bg_color)
 
 # Generate initial collage
